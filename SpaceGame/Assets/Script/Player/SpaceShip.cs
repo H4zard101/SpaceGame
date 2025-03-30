@@ -44,6 +44,9 @@ public class SpaceShip : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         currentBoostAmount = maxBoostAmount;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void FixedUpdate()
