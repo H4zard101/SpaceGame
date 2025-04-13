@@ -12,13 +12,13 @@ public class SpaceShip : MonoBehaviour
     [SerializeField] private float yawTorque = 500f;
     [SerializeField] private float pitchTorque = 1000f;
     [SerializeField] private float rollTorque = 1000f;
-    [SerializeField] private float thrust = 100f;
+    [SerializeField] public float thrust = 100f;
     [SerializeField] private float upThrust = 50f;
     [SerializeField] private float strafeThrust = 50f;
     [SerializeField, Range(0.001f, 0.999f)] private float thrustGlideReduction = 0.999f;
     [SerializeField, Range(0.001f, 0.999f)] private float upDownGlideReduction = 0.111f;
     [SerializeField, Range(0.001f, 0.999f)] private float leftRightGlideReduction = 0.111f;
-    [SerializeField] float glide = 0f;
+    [SerializeField] public float glide = 0f;
     [SerializeField] float verticalGlide = 0f;
     [SerializeField] float horizontalGlide = 0f;
 
@@ -28,8 +28,8 @@ public class SpaceShip : MonoBehaviour
     [SerializeField] private float boostRechargeRate = 0.5f;
     [SerializeField] private float boostMultiplier = 5f;
     [SerializeField] private bool boosting = false;
-    [SerializeField] private float currentBoostAmount;
-
+    [SerializeField] public float currentBoostAmount;
+    [SerializeField] public float currentThrust;
 
     Rigidbody rb;
 
@@ -87,7 +87,7 @@ public class SpaceShip : MonoBehaviour
         // Thrust
         if(thrust1d > 0.1f || thrust1d < -0.1f)
         {
-            float currentThrust;
+
 
             if(boosting)
             {

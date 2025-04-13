@@ -36,6 +36,10 @@ public class bullet : MonoBehaviour
         {
             collision.transform.GetComponent<Target>().TakeDamage(damage);
         }
+        if (collision.gameObject.tag == "Asteroid")
+        {
+            collision.transform.GetComponent<Target>().TakeDamage(damage);
+        }
 
     }
 }

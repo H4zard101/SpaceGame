@@ -1,0 +1,38 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using TMPro;
+
+public class UIValues : MonoBehaviour
+{
+    public SpaceShip spaceShip;
+    public Target shipTarget;
+
+    public TMP_Text shieldValue;
+    public TMP_Text healthValue;
+    public TMP_Text boostValue;
+    public TMP_Text speedValue;
+    public GameObject playerShip;
+
+
+    void Update()
+    {
+        UpdateUIValues();
+    }
+
+    void UpdateUIValues()
+    {
+        shieldValue.text = "Shield: " + shipTarget.shield.ToString();
+        healthValue.text = "Health: " + shipTarget.health.ToString();
+
+        // GET RID OF THE DECIMAL PLACES
+        float newBoost = Mathf.Round(spaceShip.currentBoostAmount * Mathf.Pow(10, 0)) / Mathf.Pow(10,0);
+        boostValue.text = "Boost: " + newBoost.ToString();
+
+
+        // GET RID OF THE DECIMAL PLACES
+        float newspeed = Mathf.Round((playerShip.GetComponent<Rigidbody>().velocity.z * 100) * Mathf.Pow(10, 0)) / Mathf.Pow(10, 0);
+        speedValue.text = "Speed: " + newspeed.ToString();
+    }
+
+}

@@ -12,18 +12,11 @@ public class EnemyShooting : MonoBehaviour
     public float range = 10; // fire range
     public float nextTimeToFire = 0f;
     public bool inRange = false;
+    public FieldOfView fieldOfView;
 
     void Update()
     {
-        if((transform.position - playerPostion.position).magnitude <= range)
-        {
-            inRange = true;
-        }
-        else
-        {
-            inRange = false; 
-        }
-        if (inRange && Time.time >= nextTimeToFire)
+        if (fieldOfView.canSeePlayer && Time.time >= nextTimeToFire)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
             Fire();
@@ -37,11 +30,5 @@ public class EnemyShooting : MonoBehaviour
         Rigidbody bulletRB = _bullet.GetComponent<Rigidbody>();
 
         bulletRB.AddForce(firePoint.forward * bulletSpeed, ForceMode.Impulse);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, range);
     }
 }
