@@ -106,8 +106,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 8666661419985077010, guid: 21114265abaf44d4793f711f033e9ccd, type: 3}
   enemyRB: {fileID: 752306186654529034}
-  rotationDamp: 0.5
-  thrust: 10
+  rotationDamp: 1
+  thrust: 30
   raycastOffset: 2.5
   detectionDistance: 20
   distance: 10
@@ -148,6 +148,7 @@ MonoBehaviour:
   range: 10
   nextTimeToFire: 0
   inRange: 0
+  fieldOfView: {fileID: 3763166697203847358}
 --- !u!114 &3763166697203847358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38aee3030931d474ea003b927d5136ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 10
+  radius: 30
   angle: 100
   playerRef: {fileID: 0}
   targetMask:

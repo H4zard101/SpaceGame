@@ -10,9 +10,11 @@ public class Target : MonoBehaviour
 
     public ParticleSystem shieldParticle;
     public ParticleSystem healthParticle;
+
+
     public void TakeDamage (float amount)
     {
-        if(shield >= 0 )
+        if(shield > 0 )
         {
             shield -= amount;
             shieldParticle.Play();
@@ -23,7 +25,7 @@ public class Target : MonoBehaviour
             healthParticle.Play();
         }
         
-        if (health <= 0f)
+        if (health < 0f)
         {
             Die();
         }

@@ -22,17 +22,25 @@ public class UIValues : MonoBehaviour
 
     void UpdateUIValues()
     {
-        shieldValue.text = "Shield: " + shipTarget.shield.ToString();
-        healthValue.text = "Health: " + shipTarget.health.ToString();
+        if (playerShip != null)
+        {
+            shieldValue.text = "Shield: " + shipTarget.shield.ToString();
+            healthValue.text = "Health: " + shipTarget.health.ToString();
 
-        // GET RID OF THE DECIMAL PLACES
-        float newBoost = Mathf.Round(spaceShip.currentBoostAmount * Mathf.Pow(10, 0)) / Mathf.Pow(10,0);
-        boostValue.text = "Boost: " + newBoost.ToString();
+            // GET RID OF THE DECIMAL PLACES
+            float newBoost = Mathf.Round(spaceShip.currentBoostAmount * Mathf.Pow(10, 0)) / Mathf.Pow(10, 0);
+            boostValue.text = "Boost: " + newBoost.ToString();
 
 
-        // GET RID OF THE DECIMAL PLACES
-        float newspeed = Mathf.Round((playerShip.GetComponent<Rigidbody>().velocity.z * 100) * Mathf.Pow(10, 0)) / Mathf.Pow(10, 0);
-        speedValue.text = "Speed: " + newspeed.ToString();
+            // GET RID OF THE DECIMAL PLACES
+            float newspeed = Mathf.Round((playerShip.GetComponent<Rigidbody>().velocity.z * 100) * Mathf.Pow(10, 0)) / Mathf.Pow(10, 0);
+            speedValue.text = "Speed: " + newspeed.ToString();
+        }
+        else
+        {
+            return;
+        }
+
     }
 
 }

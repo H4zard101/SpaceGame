@@ -22,17 +22,32 @@ public class EnemyMovement : MonoBehaviour
     void Move()
     {
         //transform.position += transform.forward * thrust * Time.deltaTime;
+        if(target != null)
+        {
+            Vector3 targetLocation = target.transform.position - transform.position;
+            distance = targetLocation.magnitude;
+            enemyRB.AddRelativeForce(Vector3.forward * Mathf.Clamp((distance - 7) / 50f, 0f, 1f * thrust * Time.deltaTime));
+        }
+        else
+        {
+            return;
+        }
 
-        Vector3 targetLocation = target.transform.position - transform.position;
-        distance = targetLocation.magnitude;
-        enemyRB.AddRelativeForce(Vector3.forward * Mathf.Clamp((distance - 7)/50f,0f,1f * thrust * Time.deltaTime));
     }
 
     void Turn()
     {
-        Vector3 pos = target.transform.position - transform.position;
-        Quaternion roatation = Quaternion.LookRotation(pos);
-        transform.rotation = Quaternion.Slerp(transform.rotation, roatation, rotationDamp * Time.deltaTime);
+        if(target != null)
+        {
+            Vector3 pos = target.transform.position - transform.position;
+            Quaternion roatation = Quaternion.LookRotation(pos);
+            transform.rotation = Quaternion.Slerp(transform.rotation, roatation, rotationDamp * Time.deltaTime);
+        }
+        else
+        {
+            return;
+        }
+
     }
 
 

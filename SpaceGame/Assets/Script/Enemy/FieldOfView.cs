@@ -11,7 +11,7 @@ public class FieldOfView : MonoBehaviour
     public LayerMask targetMask;
     public LayerMask obstructionMask;
     public bool canSeePlayer;
-    void Start()
+    void Awake()
     {
         playerRef = GameObject.FindGameObjectWithTag("Player");
         StartCoroutine(FovRoutine());
