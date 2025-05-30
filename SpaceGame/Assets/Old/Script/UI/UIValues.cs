@@ -26,14 +26,17 @@ public class UIValues : MonoBehaviour
     }
     void Update()
     {
-        UpdateUIValues();
+        if (GameStateManager.Instance.state == GameStateManager.gameState.inGame)
+        {
+            UpdateUIValues();
+        }
     }
 
     void UpdateUIValues()
     {
         if (playerShip != null)
         {
-            shieldValue.text = "Shield: " + shipTarget.shield.ToString();
+            shieldValue.text = "Shield: " + Mathf.Round(shipTarget.shield).ToString();
             healthValue.text = "Health: " + shipTarget.health.ToString();
 
             // GET RID OF THE DECIMAL PLACES

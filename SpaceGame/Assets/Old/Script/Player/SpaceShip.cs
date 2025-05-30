@@ -55,10 +55,6 @@ public class SpaceShip : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         currentBoostAmount = maxBoostAmount;
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-
         // loop through all the children of the engine object and add their particle systems to the list
         if(EngineObject.transform.childCount>0)
         {
@@ -88,8 +84,20 @@ public class SpaceShip : MonoBehaviour
 
     private void FixedUpdate()
     {
-        HandelBoosting();
-        HandelMovement();
+        if(GameStateManager.Instance.state == GameStateManager.gameState.inGame)
+        {
+            HandelBoosting();
+            HandelMovement();
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            return;
+        }
+
     }
 
     void HandelBoosting()

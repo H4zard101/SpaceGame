@@ -23,8 +23,12 @@ public class EnemyMovement : MonoBehaviour
     }
     private void Update()
     {
-        Pathfinding();
-        Move();
+        if (GameStateManager.Instance.state == GameStateManager.gameState.inGame)
+        {
+            Pathfinding();
+            Move();
+        }
+        
     }
 
     void Move()

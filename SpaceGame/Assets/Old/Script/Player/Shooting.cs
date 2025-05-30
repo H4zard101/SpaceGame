@@ -23,10 +23,13 @@ public class Shooting : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(0) &&Time.time >= nextTimeToFire)
+        if (GameStateManager.Instance.state == GameStateManager.gameState.inGame)
         {
-            nextTimeToFire = Time.time + 1f / fireRate;
-            Fire();
+            if (Input.GetMouseButton(0) && Time.time >= nextTimeToFire)
+            {
+                nextTimeToFire = Time.time + 1f / fireRate;
+                Fire();
+            }
         }
     }
 

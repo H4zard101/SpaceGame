@@ -5,9 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagment : MonoBehaviour
 {
+
+
     public void PlayGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if(GameStateManager.Instance != null)
+        {
+            StateSwitch.SwitchState(GameStateManager.Instance.state = GameStateManager.gameState.inGame);
+        }
     }
     public void EndGame()
     {

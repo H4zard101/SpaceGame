@@ -29,11 +29,15 @@ public class EnemyShooting : MonoBehaviour
     }
     void Update()
     {
-        if (fieldOfView.canSeePlayer && Time.time >= nextTimeToFire)
+        if (GameStateManager.Instance.state == GameStateManager.gameState.inGame)
         {
-            nextTimeToFire = Time.time + 1f / fireRate;
-            Fire();
+            if (fieldOfView.canSeePlayer && Time.time >= nextTimeToFire)
+            {
+                nextTimeToFire = Time.time + 1f / fireRate;
+                Fire();
+            }
         }
+        
     }
 
 
