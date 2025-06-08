@@ -16,16 +16,12 @@ public class Target : MonoBehaviour
     public ParticleSystem shieldParticle;
     public ParticleSystem healthParticle;
 
-    public UIValues uiValues;
+
 
     private Coroutine regenCoroutine;
     private float lastDamageTime;
     private bool isRegenerating = false;
 
-    void Awake()
-    {
-        uiValues = GameObject.FindObjectOfType<UIValues>();
-    }
 
     public void TakeDamage(float amount)
     {
@@ -91,7 +87,7 @@ public class Target : MonoBehaviour
         if (gameObject.tag == "Enemy")
         {
             Destroy(gameObject);
-            uiValues.enemies.Remove(this.gameObject);
+            
         }
 
         if (gameObject.tag == "Player")
