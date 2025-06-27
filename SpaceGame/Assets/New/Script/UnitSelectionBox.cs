@@ -37,7 +37,7 @@ public class UnitSelectionBox : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
 
-            if(boxVisual.rect.width > 0 || boxVisual.rect.height > 0)
+            if (boxVisual.rect.width > 0 || boxVisual.rect.height > 0)
             {
                 UnitSelectionManager.Instance.DeselectAll();
                 SelectUnits();

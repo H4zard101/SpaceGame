@@ -45,7 +45,7 @@ public class CameraMovement : MonoBehaviour
 
     void HandleRotation()
     {
-        if (Input.GetMouseButton(1)) // Right mouse button
+        if (Input.GetMouseButton(2)) // Right mouse button
         {
             yaw += Input.GetAxis("Mouse X") * rotationSpeed;
             pitch -= Input.GetAxis("Mouse Y") * rotationSpeed;

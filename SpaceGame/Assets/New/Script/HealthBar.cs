@@ -7,6 +7,7 @@ public class HealthBar : MonoBehaviour
 {
     [SerializeField] private Image healthBarSprite;
     [SerializeField] private Image shieldBarSprite;
+    [SerializeField] private Canvas canvas;
 
     public void UpdateHealthBar(float maxHealth, float currentHealth)
     {
@@ -16,5 +17,10 @@ public class HealthBar : MonoBehaviour
     public void UpdateShieldhBar(float maxShield, float currentShield)
     {
         shieldBarSprite .fillAmount = currentShield / maxShield;
+    }
+
+    public void Start()
+    {
+        canvas.gameObject.SetActive(false);
     }
 }
