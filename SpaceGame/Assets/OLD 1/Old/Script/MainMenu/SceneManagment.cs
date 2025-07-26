@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,8 +6,21 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagment : MonoBehaviour
 {
+    public GameObject SettingsPanel;
+    public GameObject CreditsPanel;
+    public GameObject MainMenuPanel;
 
 
+    public void Start()
+    {
+        SettingsPanel = GameObject.Find("SettingsPage");
+        CreditsPanel = GameObject.Find("CreditsParent");
+        MainMenuPanel = GameObject.Find("MainMenuParent");
+
+        SettingsPanel.SetActive(false);
+        MainMenuPanel.SetActive(true);
+        CreditsPanel.SetActive(false);
+    }
     public void PlayGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
@@ -21,12 +35,20 @@ public class SceneManagment : MonoBehaviour
     }
     public void SettingButton()
     {
-        // logic for settings
-        Debug.Log("Settings Button Pressed");
+        SettingsPanel.SetActive(true);
+        MainMenuPanel.SetActive(false);
+        CreditsPanel.SetActive(false);
     }
     public void CreditsButton()
     {
-        // logic for credits
-        Debug.Log("Credits Button Pressed");
+        SettingsPanel.SetActive(false);
+        MainMenuPanel.SetActive(false);
+        CreditsPanel.SetActive(true);
+    }
+    public void MainMenu()
+    {
+        SettingsPanel.SetActive(false);
+        MainMenuPanel.SetActive(true);
+        CreditsPanel.SetActive(false);
     }
 }

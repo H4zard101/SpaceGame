@@ -93,17 +93,26 @@ public class UnitMovement : MonoBehaviour
 
     void MoveTowardsTarget(Vector3 target)
     {
+        Vector3 direction = (target - transform.position).normalized;
+
+        if (direction.sqrMagnitude > 0.001f)
+        {
+            // Smoothly rotate to face the direction of movement
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f); // 5f is rotation speed
+        }
+
         transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, target) < 0.1f)
         {
             if (hasFormationTarget)
             {
-                hasFormationTarget = false; // reached formation target
+                hasFormationTarget = false;
             }
             else if (hasMoveCommand)
             {
-                hasMoveCommand = false; // reached manual move target
+                hasMoveCommand = false;
             }
         }
     }
@@ -125,8 +134,7 @@ public class UnitMovement : MonoBehaviour
         {
             isSettingHeight = false;
             lineRenderer.enabled = false;
-            //hasFormationTarget = false;
-            //hasMoveCommand = false;
+
         }
     }
 
