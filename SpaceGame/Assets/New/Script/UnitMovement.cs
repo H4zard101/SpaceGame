@@ -20,6 +20,14 @@ public class UnitMovement : MonoBehaviour
     private Vector3 formationTarget;
     private bool hasFormationTarget = false;
 
+    [Header("Separation")]
+    public float separationRadius = 8f;
+    public float separationStrength = 12f;
+    public LayerMask shipMask;
+
+    [Header("Arrival")]
+    public float slowRadius = 4f;
+
     void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
@@ -37,7 +45,8 @@ public class UnitMovement : MonoBehaviour
         {
             DrawXZPreviewToMouse();
 
-            if (Input.GetMouseButtonDown(1))
+            // IGNORE RMB if formation was just issued this frame
+            if (Input.GetMouseButtonDown(1) && UnitSelectionManager.Instance.rightClickIssuedFrame != Time.frameCount)
             {
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                 Plane plane = new Plane(Vector3.up, new Vector3(0, transform.position.y, 0));
@@ -80,7 +89,6 @@ public class UnitMovement : MonoBehaviour
             }
         }
 
-        // Move towards formation target if assigned
         if (hasFormationTarget)
         {
             MoveTowardsTarget(formationTarget);
@@ -93,27 +101,66 @@ public class UnitMovement : MonoBehaviour
 
     void MoveTowardsTarget(Vector3 target)
     {
-        Vector3 direction = (target - transform.position).normalized;
+        Vector3 pos = transform.position;
 
-        if (direction.sqrMagnitude > 0.001f)
+        // Desired direction
+        Vector3 toTarget = target - pos;
+        float dist = toTarget.magnitude;
+        Vector3 desiredDir = dist > 0.0001f ? (toTarget / dist) : Vector3.zero;
+
+        // Separation (XZ only)
+        Vector3 sep = Vector3.zero;
+        if (separationRadius > 0.01f)
         {
-            // Smoothly rotate to face the direction of movement
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f); // 5f is rotation speed
+            Collider[] near = Physics.OverlapSphere(pos, separationRadius, shipMask, QueryTriggerInteraction.Ignore);
+            foreach (var col in near)
+            {
+                if (col.transform == transform) continue;
+                Vector3 away = pos - col.transform.position;
+                away.y = 0f;
+                float d = away.magnitude;
+                if (d > 0.0001f)
+                {
+                    sep += away.normalized / (d * d);
+                }
+            }
+            if (sep.sqrMagnitude > 0.0001f)
+                sep = sep.normalized * separationStrength;
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+        // Combine with desired direction (XZ only)
+        Vector3 steerXZ = new Vector3(desiredDir.x, 0f, desiredDir.z) + new Vector3(sep.x, 0f, sep.z);
+        if (steerXZ.sqrMagnitude > 0.0001f) steerXZ.Normalize();
+
+        float speed = moveSpeed;
+        if (dist < slowRadius)
+            speed = Mathf.Lerp(0.25f * moveSpeed, moveSpeed, Mathf.InverseLerp(0f, slowRadius, dist));
+
+        float step = speed * Time.deltaTime;
+
+        Vector3 xzNow = new Vector3(pos.x, 0f, pos.z);
+        Vector3 xzTarget = new Vector3(target.x, 0f, target.z);
+        Vector3 xzNext = Vector3.MoveTowards(xzNow, xzTarget, step);
+
+        float yNext = Mathf.MoveTowards(pos.y, target.y, step);
+
+        Vector3 next = new Vector3(xzNext.x, yNext, xzNext.z);
+
+        // Rotate toward movement
+        Vector3 vel = next - pos;
+        Vector3 velXZ = new Vector3(vel.x, 0f, vel.z);
+        if (velXZ.sqrMagnitude > 0.0001f)
+        {
+            Quaternion look = Quaternion.LookRotation(velXZ.normalized, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, look, Time.deltaTime * 5f);
+        }
+
+        transform.position = next;
 
         if (Vector3.Distance(transform.position, target) < 0.1f)
         {
-            if (hasFormationTarget)
-            {
-                hasFormationTarget = false;
-            }
-            else if (hasMoveCommand)
-            {
-                hasMoveCommand = false;
-            }
+            if (hasFormationTarget) hasFormationTarget = false;
+            else if (hasMoveCommand) hasMoveCommand = false;
         }
     }
 
@@ -134,7 +181,6 @@ public class UnitMovement : MonoBehaviour
         {
             isSettingHeight = false;
             lineRenderer.enabled = false;
-
         }
     }
 
@@ -171,7 +217,6 @@ public class UnitMovement : MonoBehaviour
         hasFormationTarget = false;
     }
 
-    // NEW method for continuous formation movement
     public void SetFormationTarget(Vector3 target)
     {
         formationTarget = target;

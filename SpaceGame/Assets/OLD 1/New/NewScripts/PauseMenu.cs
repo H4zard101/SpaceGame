@@ -8,11 +8,14 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenuUi;
     public bool isPaused;
 
-
+    public GameState gameState;
     public void Start()
     {
-        pauseMenuUi = GameObject.Find("PauseMenu"); // find the object and set it to the variable
+        //pauseMenuUi = GameObject.Find("pause"); // find the object and set it to the variable
         pauseMenuUi.SetActive(false); // set it to false on start so it doesnt appear on the screen
+
+        // ASSIGN THE GAME STATE OBJECT
+        gameState = GameObject.Find("GameStateManager").GetComponent<GameState>();
     }
 
     public void Update()
@@ -33,13 +36,27 @@ public class PauseMenu : MonoBehaviour
     public void PauseGame()
     {
         pauseMenuUi.SetActive(true);
-        StateSwitch.SwitchState(GameStateManager.Instance.state = GameStateManager.gameState.pause);
+        gameState.GetComponent<GameState>().game_state = GameState.gameState.Game_Menu;
         isPaused = true;
     }
     public void ResumeGame()
     {
         pauseMenuUi.SetActive(false);
-        StateSwitch.SwitchState(GameStateManager.Instance.state = GameStateManager.gameState.inGame);
+        gameState.GetComponent<GameState>().game_state = GameState.gameState.InGame;
         isPaused = false;
     }
+    public void SaveButton()
+    {
+        DataPersistenceManager.instance.SaveGame();
+        Debug.Log("SavedGame");
+    }
+    public void ExitApplication()
+    {
+        Application.Quit();
+    }
+    public void SettingButton()
+    {
+        // TO Do Later
+    }
+
 }
